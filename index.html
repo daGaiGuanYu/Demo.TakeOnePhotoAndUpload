@@ -1,0 +1,37 @@
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<video id="video" width="480" height="320" controls></video>
+<button id="capture" onclick="take()">拍照</button>
+<canvas id="canvas" width="480" height="320"></canvas>
+
+<script>
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const context = canvas.getContext('2d');
+
+navigator.mediaDevices.getUserMedia({ video : { width: 480, height: 320 }})
+  .then( stream => {
+    video.srcObject = stream
+    video.play()
+  })
+  .catch(console.error)
+
+const mime = 'image/jpeg'
+function take(){
+  context.drawImage(video, 0, 0, 480, 320)
+  const dataURL = canvas.toDataURL(mime)
+  const dataBase64 = dataURL.split(',')[1]
+  const dataStr = atob(dataBase64)
+  let len = dataStr.length
+  const uint8Array = new Uint8Array(len)
+  while(len--)
+    uint8Array[len] = dataStr.charCodeAt(len)
+  
+  const file = new Blob([uint8Array], { type: mime })
+  axios.post('/upload', file, {
+    'Content-Type': 'application/octet-stream'
+  }).then( res => {
+    console.log(res)
+  })
+}
+</script>

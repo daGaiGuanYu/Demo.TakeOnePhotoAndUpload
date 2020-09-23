@@ -1,0 +1,16 @@
+{
+  "name": "kuaizi-ground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "kuaizi": "^1.2.0",
+    "kuaizi-dev-static": "^1.0.2"
+  }
+}
